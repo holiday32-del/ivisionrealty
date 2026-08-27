@@ -8,6 +8,16 @@ export function GET() {
 ## Canonical website
 ${SITE_URL}
 
+## Primary pages
+- Home: ${SITE_URL}/
+- Services: ${SITE_URL}/services
+- Buy with IVISION Realty: ${SITE_URL}/buy-with-us
+- List with IVISION Realty: ${SITE_URL}/list-with-us
+- Appointment requests: ${SITE_URL}/appointment
+- Third-party resources and affiliate disclosures: ${SITE_URL}/resources
+- About IVISION Realty Corp: ${SITE_URL}/about
+- Contact: ${SITE_URL}/contact
+
 ## Services
 - Residential buyer and seller representation
 - Commercial and investment property support
@@ -20,6 +30,14 @@ ${SITE_URL}
 - Privacy, terms, and disclosures: /privacy, /terms, /disclosures
 - Third-party real estate and business resources with affiliate disclosures
 
+## Business identity
+- Legal and public name: IVISION Realty Corp
+- Alternate name: IVISION Realty
+- Business type: California real estate agency and local business
+- Founded: 2010
+- Canonical organization identifier: ${SITE_URL}/#organization
+- Canonical website identifier: ${SITE_URL}/#website
+
 ## Service area
 Greater Los Angeles, San Bernardino County, and select California markets based on service availability.
 
@@ -30,6 +48,11 @@ Greater Los Angeles, San Bernardino County, and select California markets based 
 
 ## Important qualification
 Real estate funding programs are subject to lender requirements, underwriting, eligibility, and approval. IVISION Realty Corp does not guarantee financing, credit outcomes, property performance, or transaction timelines.
+
+## Source and compensation notes
+- Keller Williams Property Search and Land Search are third-party resources and are not affiliate links.
+- New Wide Lending is the identified source for real estate funding information; IVISION Realty Corp does not guarantee funding or approval.
+- Other third-party links may be affiliate links only when clearly labeled and disclosed on the page.
 `;
 
   return new Response(content, {

@@ -93,13 +93,40 @@ test("ships answer-engine schemas aligned with visible business information", as
 
   assert.match(homeHtml, /"@type":\["RealEstateAgent","LocalBusiness"\]/i);
   assert.match(homeHtml, /"@type":"WebSite"/i);
+  assert.match(homeHtml, /"alternateName":"IVISION Realty"/i);
+  assert.match(homeHtml, /"foundingDate":"2010"/i);
+  assert.match(homeHtml, /"@id":"https:\/\/ivisionrealtycorp\.com\/#organization"/i);
   assert.match(homeHtml, /"@type":"FAQPage"/i);
+  assert.match(homeHtml, /"@type":"WebPage"/i);
   assert.match(homeHtml, /What areas does IVISION Realty serve\?/i);
   assert.match(homeHtml, /Greater Los Angeles, San Bernardino County, and select California markets based on service availability\./i);
   assert.match(homeHtml, /info@ivisionrealtycorp\.com/i);
   assert.match(homeHtml, /2922 Crenshaw Boulevard/i);
   assert.match(servicesHtml, /"@type":"BreadcrumbList"/i);
   assert.match(servicesHtml, /"@type":"ItemList"/i);
+  assert.match(servicesHtml, /"@type":"CollectionPage"/i);
+  assert.match(servicesHtml, /"mainEntity":\{"@id":"https:\/\/ivisionrealtycorp\.com\/services#service-list"\}/i);
+});
+
+test("connects every public route to the canonical entity graph", async () => {
+  const routes = ["/buy-with-us", "/list-with-us", "/appointment", "/resources", "/about", "/contact", "/privacy", "/terms", "/disclosures"];
+
+  for (const path of routes) {
+    const response = await render(path);
+    const html = await response.text();
+    assert.match(html, /"isPartOf":\{"@id":"https:\/\/ivisionrealtycorp\.com\/#website"\}/i, path);
+    assert.match(html, /"about":\{"@id":"https:\/\/ivisionrealtycorp\.com\/#organization"\}/i, path);
+    assert.match(html, /"publisher":\{"@id":"https:\/\/ivisionrealtycorp\.com\/#organization"\}/i, path);
+    assert.match(html, /"@type":"BreadcrumbList"/i, path);
+    assert.match(html, /<meta[^>]+name="twitter:card"[^>]+content="summary_large_image"/i, path);
+  }
+
+  const buyerHtml = await (await render("/buy-with-us")).text();
+  const sellerHtml = await (await render("/list-with-us")).text();
+  assert.match(buyerHtml, /"serviceType":"Real estate buyer representation"/i);
+  assert.match(sellerHtml, /"serviceType":"Real estate seller representation"/i);
+  assert.match(buyerHtml, /"areaServed":\{"@type":"State","name":"California"\}/i);
+  assert.match(sellerHtml, /"areaServed":\{"@type":"State","name":"California"\}/i);
 });
 
 test("publishes canonical robots, sitemap, and llms resources", async () => {
@@ -126,6 +153,8 @@ test("publishes canonical robots, sitemap, and llms resources", async () => {
   assert.match(llms.headers.get("content-type") ?? "", /^text\/plain\b/i);
   assert.match(llmsText, /info@ivisionrealtycorp\.com/i);
   assert.match(llmsText, /New Wide Lending/i);
+  assert.match(llmsText, /Canonical organization identifier: https:\/\/ivisionrealtycorp\.com\/#organization/i);
+  assert.match(llmsText, /Keller Williams Property Search and Land Search are third-party resources and are not affiliate links/i);
 });
 
 test("loads the Zotabox widgets script from the document head", async () => {

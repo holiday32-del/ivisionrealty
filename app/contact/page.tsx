@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { breadcrumbSchema, CONTACT_EMAIL, CONTACT_PHONE, pageOpenGraph, SITE_URL } from "../seo";
+import { breadcrumbSchema, pageOpenGraph, pageTwitter, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
 import { StructuredData } from "../structured-data";
 import Link from "next/link";
@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     "Start a conversation with our Los Angeles real estate and property-management team.",
     "/contact",
   ),
+  twitter: pageTwitter(
+    "Contact IVISION Realty Corp",
+    "Start a conversation with our Los Angeles real estate and property-management team.",
+  ),
 };
 
 export default function ContactPage() {
@@ -20,19 +24,7 @@ export default function ContactPage() {
     <SiteShell>
       <StructuredData data={[
         breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]),
-        {
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "@id": `${SITE_URL}/contact#webpage`,
-          url: `${SITE_URL}/contact`,
-          name: "Contact IVISION Realty Corp",
-          isPartOf: { "@id": `${SITE_URL}/#website` },
-          mainEntity: {
-            "@id": `${SITE_URL}/#organization`,
-            email: CONTACT_EMAIL,
-            telephone: CONTACT_PHONE,
-          },
-        },
+        webPageSchema({ path: "/contact", name: "Contact IVISION Realty Corp", description: "Contact the Los Angeles office about California real estate representation, property management, property searches, and funding resources.", type: "ContactPage", mainEntityId: "https://ivisionrealtycorp.com/#organization" }),
       ]} />
       <main className="contactPage">
         <section className="contactIntro shell">

@@ -56,12 +56,78 @@ export function pageOpenGraph(title: string, description: string, path: string) 
   };
 }
 
+export function pageTwitter(title: string, description: string) {
+  return {
+    card: "summary_large_image" as const,
+    title,
+    description,
+    images: [absoluteUrl("/og.png")],
+  };
+}
+
+export function webPageSchema({
+  path,
+  name,
+  description,
+  type = "WebPage",
+  mainEntityId,
+}: {
+  path: string;
+  name: string;
+  description: string;
+  type?: "WebPage" | "AboutPage" | "ContactPage" | "CollectionPage";
+  mainEntityId?: string;
+}) {
+  const url = absoluteUrl(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    description,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#organization` },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    inLanguage: "en-US",
+    ...(mainEntityId ? { mainEntity: { "@id": mainEntityId } } : {}),
+  };
+}
+
+export function realEstateServiceSchema({
+  path,
+  name,
+  description,
+  serviceType,
+}: {
+  path: string;
+  name: string;
+  description: string;
+  serviceType: string;
+}) {
+  const url = absoluteUrl(path);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    url,
+    name,
+    description,
+    serviceType,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: { "@type": "State", name: "California" },
+  };
+}
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": ["RealEstateAgent", "LocalBusiness"],
   "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
   alternateName: "IVISION Realty",
+  legalName: SITE_NAME,
   url: SITE_URL,
   logo: absoluteUrl("/og.png"),
   image: absoluteUrl("/og.png"),
@@ -69,6 +135,8 @@ export const organizationSchema = {
     "Los Angeles real estate representation, property management support, property search resources, and connections to real estate funding information for California clients.",
   email: CONTACT_EMAIL,
   telephone: CONTACT_PHONE,
+  foundingDate: "2010",
+  slogan: "Real estate. Property. Capital. One clear path forward.",
   address: {
     "@type": "PostalAddress",
     ...BUSINESS_ADDRESS,
@@ -108,6 +176,7 @@ export const websiteSchema = {
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
   name: SITE_NAME,
+  alternateName: "IVISION Realty",
   publisher: { "@id": `${SITE_URL}/#organization` },
   inLanguage: "en-US",
 };

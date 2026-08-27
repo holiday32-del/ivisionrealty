@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumbSchema, pageOpenGraph, SITE_URL } from "../seo";
+import { breadcrumbSchema, pageOpenGraph, pageTwitter, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
 import { StructuredData } from "../structured-data";
 
@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     "A connected real estate and property-management partner serving California clients from Los Angeles.",
     "/about",
   ),
+  twitter: pageTwitter(
+    "About IVISION Realty Corp",
+    "A connected real estate and property-management partner serving California clients from Los Angeles.",
+  ),
 };
 
 export default function AboutPage() {
@@ -20,15 +24,7 @@ export default function AboutPage() {
     <SiteShell>
       <StructuredData data={[
         breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About", path: "/about" }]),
-        {
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          "@id": `${SITE_URL}/about#webpage`,
-          url: `${SITE_URL}/about`,
-          name: "About IVISION Realty Corp",
-          about: { "@id": `${SITE_URL}/#organization` },
-          isPartOf: { "@id": `${SITE_URL}/#website` },
-        },
+        webPageSchema({ path: "/about", name: "About IVISION Realty Corp", description: "A connected real estate and property-management partner serving California clients from Los Angeles.", type: "AboutPage", mainEntityId: "https://ivisionrealtycorp.com/#organization" }),
       ]} />
       <main>
         <section className="pageHero pageHeroAbout"><div className="pageHeroShade" /><div className="shell"><p className="eyebrow light">About IVISION</p><h1>Real estate is personal.<br /><em>So is our approach.</em></h1><p>We pair local market knowledge with a wider view of property, financing, and the goals behind every move.</p></div></section>

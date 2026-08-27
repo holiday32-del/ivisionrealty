@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SearchFundingResources } from "./search-funding-resources";
-import { faqSchema, homeFaqs, pageOpenGraph } from "./seo";
+import { faqSchema, homeFaqs, pageOpenGraph, pageTwitter, webPageSchema } from "./seo";
 import { SiteShell } from "./site-shell";
 import { StructuredData } from "./structured-data";
 
@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     "Los Angeles Real Estate & Property Management | IVISION Realty Corp",
     "Residential and commercial real estate, property management, property search resources, and funding information for California clients.",
     "/",
+  ),
+  twitter: pageTwitter(
+    "Los Angeles Real Estate & Property Management | IVISION Realty Corp",
+    "Residential and commercial real estate, property management, property search resources, and funding information for California clients.",
   ),
 };
 
@@ -44,7 +48,15 @@ const services = [
 export default function Home() {
   return (
     <SiteShell>
-      <StructuredData data={faqSchema} />
+      <StructuredData data={[
+        webPageSchema({
+          path: "/",
+          name: "Los Angeles Real Estate & Property Management | IVISION Realty Corp",
+          description: "Residential and commercial real estate, property management, property search resources, and funding information for California clients.",
+          mainEntityId: "https://ivisionrealtycorp.com/#organization",
+        }),
+        faqSchema,
+      ]} />
       <main>
         <section className="hero heroHome">
           <div className="heroShade" />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateResourceCard, affiliateResources } from "../affiliate-resources";
 import { SearchFundingResources } from "../search-funding-resources";
-import { absoluteUrl, breadcrumbSchema, pageOpenGraph, SITE_URL } from "../seo";
+import { absoluteUrl, breadcrumbSchema, pageOpenGraph, pageTwitter, SITE_URL, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
 import { StructuredData } from "../structured-data";
 
@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     "Real Estate & Property Management Services | IVISION Realty Corp",
     "Connected real estate, property management, property search, and funding resources for California clients.",
     "/services",
+  ),
+  twitter: pageTwitter(
+    "Real Estate & Property Management Services | IVISION Realty Corp",
+    "Connected real estate, property management, property search, and funding resources for California clients.",
   ),
 };
 
@@ -148,6 +152,7 @@ export default function ServicesPage() {
     <SiteShell>
       <StructuredData data={[
         breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]),
+        webPageSchema({ path: "/services", name: "Real Estate & Property Management Services", description: "Residential and commercial representation, property management, property search, and funding resources for California clients.", type: "CollectionPage", mainEntityId: `${SITE_URL}/services#service-list` }),
         serviceSchema,
       ]} />
       <main>

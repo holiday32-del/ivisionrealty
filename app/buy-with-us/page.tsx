@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumbSchema, pageOpenGraph } from "../seo";
+import { breadcrumbSchema, pageOpenGraph, pageTwitter, realEstateServiceSchema, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
 import { StructuredData } from "../structured-data";
 
@@ -11,12 +11,17 @@ export const metadata: Metadata = {
   description: "Work with IVISION Realty Corp to plan a California real estate purchase and use the free Keller Williams property search.",
   alternates: { canonical: "/buy-with-us" },
   openGraph: pageOpenGraph("Buy With Us | IVISION Realty Corp", "Plan your California property purchase and search current listings.", "/buy-with-us"),
+  twitter: pageTwitter("Buy With Us | IVISION Realty Corp", "Plan your California property purchase and search current listings."),
 };
 
 export default function BuyWithUsPage() {
   return (
     <SiteShell>
-      <StructuredData data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Buy With Us", path: "/buy-with-us" }])} />
+      <StructuredData data={[
+        breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Buy With Us", path: "/buy-with-us" }]),
+        webPageSchema({ path: "/buy-with-us", name: "Buy With Us", description: "Buyer representation and California property-search guidance from IVISION Realty Corp.", mainEntityId: "https://ivisionrealtycorp.com/buy-with-us#service" }),
+        realEstateServiceSchema({ path: "/buy-with-us", name: "California Buyer Representation", description: "Real estate purchase planning, buyer representation, and access to a third-party California property search.", serviceType: "Real estate buyer representation" }),
+      ]} />
       <main>
         <section className="pathHero"><div className="shell"><p className="eyebrow">Buyer representation</p><h1>Buy With Us.</h1><p>Start with a clear plan, explore California listings, and contact IVISION Realty when you are ready to discuss your goals.</p></div></section>
         <section className="pathwayPage shell" id="property-search">

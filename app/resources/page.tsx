@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AffiliateResourceCard, affiliateResources } from "../affiliate-resources";
-import { breadcrumbSchema, pageOpenGraph } from "../seo";
+import { breadcrumbSchema, pageOpenGraph, pageTwitter, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
 import { StructuredData } from "../structured-data";
 
@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     "Real Estate & Business Resources | IVISION Realty Corp",
     "Professional third-party resources for real estate, property ownership, moving, service businesses, and business financing.",
     "/resources",
+  ),
+  twitter: pageTwitter(
+    "Real Estate & Business Resources | IVISION Realty Corp",
+    "Professional third-party resources for real estate, property ownership, moving, service businesses, and business financing.",
   ),
 };
 
@@ -47,7 +51,10 @@ const resourceGroups = [
 export default function ResourcesPage() {
   return (
     <SiteShell>
-      <StructuredData data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Resources", path: "/resources" }])} />
+      <StructuredData data={[
+        breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Resources", path: "/resources" }]),
+        webPageSchema({ path: "/resources", name: "Real Estate & Business Resources", description: "Clearly disclosed third-party resources for homeowners, property owners, real-estate investors, and business owners.", type: "CollectionPage" }),
+      ]} />
       <main>
         <section className="pageHero pageHeroResources">
           <div className="pageHeroShade" />
