@@ -266,16 +266,51 @@ test("publishes approved FlexOffers resources with disclosures and safe links", 
   assert.doesNotMatch(html, /cheapest|lowest|best|#1|guaranteed approval|guaranteed funding/i);
 });
 
-test("keeps IRA Financial affiliate placement out of public UI pending approval", async () => {
-  const responses = await Promise.all([render("/"), render("/services"), render("/resources"), render("/about"), render("/contact")]);
-  const html = (await Promise.all(responses.map((response) => response.text()))).join("\n");
-  const affiliateSource = await readFile(new URL("../app/affiliate-resources.tsx", import.meta.url), "utf8");
+test("publishes IRA Financial as a separate retirement and investment resource", async () => {
+  const response = await render("/resources");
+  const html = await response.text();
 
-  assert.match(affiliateSource, /IRA Financial affiliate placement pending advertiser copy approval/i);
-  assert.match(affiliateSource, /https:\/\/fxo\.co\/JEtD/i);
-  assert.match(affiliateSource, /pending-copy-approval/i);
-  assert.doesNotMatch(html, /IRA Financial/i);
-  assert.doesNotMatch(html, /https:\/\/fxo\.co\/JEtD/i);
+  assert.match(html, /Real-estate investor &amp; retirement resource/i);
+  assert.match(html, /IRA Financial/i);
+  assert.match(html, /href="https:\/\/fxo\.co\/JEtD"[^>]+rel="sponsored noopener noreferrer"[^>]+target="_blank"/i);
+  assert.match(html, /self-directed retirement-account information and investment resources/i);
+});
+
+test("positions New Wide Lending as the primary financing resource without affiliate labeling", async () => {
+  const responses = await Promise.all([render("/resources"), render("/services"), render("/buy-with-us")]);
+  const [resourcesHtml, servicesHtml, buyHtml] = await Promise.all(responses.map((response) => response.text()));
+  const combined = `${resourcesHtml}\n${servicesHtml}\n${buyHtml}`;
+
+  assert.match(resourcesHtml, /Mortgage &amp; Real Estate Financing/i);
+  assert.match(resourcesHtml, /Business &amp; Investment Financing/i);
+  assert.match(resourcesHtml, /Explore Mortgage Options/i);
+  assert.match(resourcesHtml, /Explore Business &amp; Investor Financing/i);
+  assert.ok(resourcesHtml.indexOf("Mortgage &amp; Real Estate Financing") < resourcesHtml.indexOf("IRA Financial"));
+  assert.ok(resourcesHtml.indexOf("Business &amp; Investment Financing") < resourcesHtml.indexOf("IRA Financial"));
+
+  assert.match(buyHtml, /Need Financing Before You Buy\?/i);
+  assert.match(buyHtml, /Explore Home Financing/i);
+
+  for (const label of ["Homebuyer Financing", "Refinance &amp; Home Equity", "Investor Financing Resources", "Business Funding"]) {
+    assert.match(servicesHtml, new RegExp(label, "i"));
+  }
+
+  assert.match(servicesHtml, /href="https:\/\/www\.newwidelending\.com\/investment-property-loans"[^>]+rel="noopener noreferrer"[^>]+target="_blank"/i);
+  assert.match(combined, /href="https:\/\/www\.newwidelending\.com\/"[^>]+rel="noopener noreferrer"[^>]+target="_blank"/i);
+  assert.doesNotMatch(combined, /href="https:\/\/www\.newwidelending\.com\/(?:investment-property-loans)?"[^>]+rel="sponsored/i);
+});
+
+test("keeps New Wide Lending primary and SuperMoney secondary for business financing", async () => {
+  const responses = await Promise.all([render("/resources"), render("/services")]);
+  const [resourcesHtml, servicesHtml] = await Promise.all(responses.map((response) => response.text()));
+
+  assert.match(servicesHtml, /Business owners can explore financing through New Wide Lending or compare additional third-party financing options through SuperMoney/i);
+  assert.match(servicesHtml, /Explore Business Funding/i);
+  assert.match(servicesHtml, /Compare Additional Financing Options/i);
+  assert.ok(servicesHtml.indexOf("New Wide Lending") < servicesHtml.lastIndexOf("SuperMoney Business Financing"));
+  assert.ok(resourcesHtml.indexOf("Business &amp; Investment Financing") < resourcesHtml.indexOf("SuperMoney Business Financing"));
+  assert.match(`${resourcesHtml}\n${servicesHtml}`, /href="https:\/\/fxo\.co\/JEtF"[^>]+rel="sponsored noopener noreferrer"[^>]+target="_blank"/i);
+  assert.match(`${resourcesHtml}\n${servicesHtml}`, /Affiliate Disclosure:/i);
 });
 
 test("publishes the current phone number and office address", async () => {

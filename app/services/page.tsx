@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateResourceCard, affiliateResources } from "../affiliate-resources";
+import { NEW_WIDE_LENDING_INVESTOR_URL, NEW_WIDE_LENDING_URL } from "../new-wide-lending";
 import { SearchFundingResources } from "../search-funding-resources";
 import { absoluteUrl, breadcrumbSchema, pageOpenGraph, pageTwitter, SITE_URL, webPageSchema } from "../seo";
 import { SiteShell } from "../site-shell";
@@ -36,7 +37,7 @@ const groups = [
     id: "funding", number: "03", kicker: "Real estate funding", title: "Connect with a dedicated real estate funding source.", image: "serviceImage fundingImage",
     copy: "New Wide Lending provides real estate funding information for home purchases, commercial property, and investment real estate. IVISION clients can explore available paths directly with its funding team.",
     points: ["Residential real estate funding information", "Commercial and investment property programs", "Program and documentation review", "Credit-readiness planning resources"],
-    externalHref: "https://www.newwidelending.com/investment-property-loans",
+    externalHref: NEW_WIDE_LENDING_URL,
     externalLabel: "Explore funding at New Wide Lending",
   },
   {
@@ -114,14 +115,68 @@ function ServiceResourceSections({ groupId }: { groupId: string }) {
     );
   }
 
+  if (groupId === "funding") {
+    const financingResources = [
+      {
+        title: "Homebuyer Financing",
+        copy: "Prospective buyers can review New Wide Lending mortgage options and prepare for a financing conversation.",
+        action: "Explore Homebuyer Financing",
+        href: NEW_WIDE_LENDING_URL,
+      },
+      {
+        title: "Refinance & Home Equity",
+        copy: "Homeowners can explore refinance and home-equity options through New Wide Lending.",
+        action: "Explore Homeowner Financing",
+        href: NEW_WIDE_LENDING_URL,
+      },
+      {
+        title: "Investor Financing Resources",
+        copy: "Real-estate investors can explore financing options through New Wide Lending for investment-property and other investor-focused scenarios.",
+        action: "Explore Investor Financing",
+        href: NEW_WIDE_LENDING_INVESTOR_URL,
+      },
+      {
+        title: "Business Funding",
+        copy: "Business owners can explore business funding options through New Wide Lending.",
+        action: "Explore Business Funding",
+        href: NEW_WIDE_LENDING_URL,
+      },
+    ];
+
+    return (
+      <section className="affiliateSection shell preferredFinancingSection">
+        <div className="affiliateIntro">
+          <div><p className="eyebrow">Primary mortgage and lending resource</p><h2>Financing options through New Wide Lending</h2></div>
+          <p>Explore contextual financing resources for homebuyers, homeowners, real-estate investors, and business owners.</p>
+        </div>
+        <div className="affiliateGrid">
+          {financingResources.map((resource) => (
+            <article className="affiliateCard preferredResourceCard" key={resource.title}>
+              <div><h3>{resource.title}</h3><p>{resource.copy}</p></div>
+              <a className="button buttonGold" href={resource.href} rel="noopener noreferrer" target="_blank">{resource.action}</a>
+            </article>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   if (groupId === "business") {
     return (
-      <InlineAffiliateSection
-        disclosure="Affiliate Disclosure: This is a third-party affiliate resource. iVision Realty may receive compensation from qualifying activity through this link. Financing is subject to the provider's eligibility requirements, underwriting, rates, fees, and terms. Approval is not guaranteed."
-        heading="Compare Business Financing Options"
-        intro="Business owners and real-estate investors may need capital for expansion, equipment, staffing, marketing, inventory, or other operating needs. You can explore third-party business-financing options through the resource below."
-        resources={[affiliateResources.superMoneyBusiness]}
-      />
+      <section className="affiliateSection shell">
+        <div className="affiliateIntro">
+          <div><p className="eyebrow">Business financing</p><h2>Primary and additional financing resources</h2></div>
+          <p>Business owners can explore financing through New Wide Lending or compare additional third-party financing options through SuperMoney.</p>
+        </div>
+        <div className="affiliateGrid">
+          <article className="affiliateCard preferredResourceCard">
+            <div><h3>New Wide Lending</h3><p>Explore business funding options through IVISION Realty&apos;s primary lending resource.</p></div>
+            <a className="button buttonGold" href={NEW_WIDE_LENDING_URL} rel="noopener noreferrer" target="_blank">Explore Business Funding</a>
+          </article>
+          <AffiliateResourceCard resource={{ ...affiliateResources.superMoneyBusiness, action: "Compare Additional Financing Options" }} />
+        </div>
+        <p className="affiliateDisclosure">Affiliate Disclosure: SuperMoney Business Financing is a third-party affiliate resource. iVision Realty may receive compensation from qualifying activity through that link. New Wide Lending is not labeled as an affiliate. Financing is subject to each provider&apos;s eligibility requirements, underwriting, rates, fees, and terms. Approval is not guaranteed.</p>
+      </section>
     );
   }
 

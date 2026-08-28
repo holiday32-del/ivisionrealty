@@ -131,6 +131,10 @@ h1 em, h2 em { color: var(--gold-light); font-style: italic; }
 .affiliateCard p { color: var(--muted); font-size: .9rem; }
 .affiliateCard .button { align-self: flex-start; }
 .affiliateDisclosure { margin: 22px 0 0; color: var(--muted); font-size: .72rem; }
+.preferredResourceGroup { border-color: rgba(193, 139, 64, .5); background: #fbf5ea; }
+.preferredResourceCard { border-color: rgba(193, 139, 64, .55); background: white; }
+.buyerFinancingCallout { min-height: 0; margin-bottom: 65px; }
+.preferredFinancingSection { border-color: rgba(193, 139, 64, .5); background: #fbf5ea; }
 
 .pageHeroResources { background-image: url('/property-search-hero-v2.png'); background-position: center 54%; }
 .resourceIndex { padding-block: 88px 110px; }

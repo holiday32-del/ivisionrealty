@@ -5,11 +5,11 @@ export const affiliateResources = {
     copy: "Explore business-management tools designed for home-service and field-service professionals.",
     action: "Explore Housecall Pro",
   },
-  // IRA Financial affiliate placement pending advertiser copy approval.
   iraFinancial: {
     name: "IRA Financial",
     url: "https://fxo.co/JEtD",
-    status: "pending-copy-approval",
+    copy: "Explore self-directed retirement-account information and investment resources through IRA Financial.",
+    action: "Explore IRA Financial",
   },
   superMoneyBusiness: {
     name: "SuperMoney Business Financing",

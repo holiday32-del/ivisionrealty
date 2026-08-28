@@ -1,3 +1,5 @@
+import { NEW_WIDE_LENDING_INVESTOR_URL } from "./new-wide-lending";
+
 const resources = [
     {
       number: "01",
@@ -29,7 +31,7 @@ const resources = [
       title: "New Wide Lending",
       copy: "Explore real estate funding options for home purchases, commercial property, and investment real estate.",
       action: "Explore funding",
-      href: "https://www.newwidelending.com/investment-property-loans",
+      href: NEW_WIDE_LENDING_INVESTOR_URL,
     },
     {
       number: "05",
