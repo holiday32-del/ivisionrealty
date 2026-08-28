@@ -1,8 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ivisionrealtycorp",
-  "compatibility_date": "2026-08-27",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2026-05-22",
   "main": "./worker/index.ts",
   "workers_dev": true,
   "preview_urls": true,
@@ -10,7 +9,7 @@
     "directory": "dist/client",
     "binding": "ASSETS",
     "not_found_handling": "none",
-    "run_worker_first": true
+    "run_worker_first": ["/*", "!/assets/*"]
   },
   "images": {
     "binding": "IMAGES"

@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-async function request(path = "/", host = "ivisionrealtycorp.com") {
+async function request(
+  path = "/",
+  host = "ivisionrealtycorp.com",
+  assetFetch = async () => new Response("Not found", { status: 404 }),
+) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${host}-${path}`);
   const { default: worker } = await import(workerUrl.href);
@@ -12,11 +16,30 @@ async function request(path = "/", host = "ivisionrealtycorp.com") {
       headers: { accept: "text/html", host },
     }),
     {
-      ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
+      ASSETS: { fetch: assetFetch },
     },
     { waitUntil() {}, passThroughOnException() {} },
   );
 }
+
+test("serves the original visual stylesheet through the Worker asset binding", async () => {
+  const stylesheet = "body { background: #fffdf9; color: #102733; }";
+  const response = await request(
+    "/assets/original-ivision-design.css",
+    "ivisionrealtycorp.com",
+    async (assetRequest) => {
+      assert.equal(new URL(assetRequest.url).pathname, "/assets/original-ivision-design.css");
+      return new Response(stylesheet, {
+        status: 200,
+        headers: { "content-type": "text/css; charset=utf-8" },
+      });
+    },
+  );
+
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/css\b/i);
+  assert.equal(await response.text(), stylesheet);
+});
 
 async function render(path = "/") {
   return request(path);

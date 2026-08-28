@@ -37,6 +37,13 @@ const worker = {
       return Response.redirect(url.toString(), 301);
     }
 
+    // Vinext emits the complete visual layer as content-hashed files under
+    // /assets/. With worker-first routing enabled, serve those files from the
+    // static asset binding before the application router handles page routes.
+    if (["GET", "HEAD"].includes(request.method) && url.pathname.startsWith("/assets/")) {
+      return env.ASSETS.fetch(request);
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {
